@@ -1,0 +1,129 @@
+/* Sidebar Main Container */
+.sidebar {
+  width: 260px;
+  background: #1e293b;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.sidebar-header {
+  padding: 30px 24px;
+  font-size: 20px;
+  font-weight: 800;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  flex-grow: 1;
+  padding: 10px 12px; 
+  overflow-y: auto;
+}
+
+/* Scrollbar Customization */
+.nav-menu::-webkit-scrollbar {
+  width: 5px;
+}
+.nav-menu::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+}
+
+/* Category Label / Toggle */
+.menu-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 20px 15px 10px 15px; 
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  text-transform: uppercase;
+}
+
+.menu-label:hover {
+  color: #f8fafc;
+}
+
+/* Submenu Container */
+.submenu {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Menu Items Styling */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+}
+
+/* Submenu Items (Hierarchy visual) */
+.submenu .nav-item {
+  padding-left: 25px; 
+  font-size: 13.5px;
+}
+
+/* Active Link Background */
+.nav-item.active {
+  background: #6366f1 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.nav-item i {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Footer & Logout Button */
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #334155;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}

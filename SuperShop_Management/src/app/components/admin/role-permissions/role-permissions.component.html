@@ -1,0 +1,69 @@
+<div class="rp-page page-enter" *ngIf="!loading; else loadingTpl">
+  <div class="rp-top-line"></div>
+  <h1 class="rp-title">
+    Manage Permissions for Role:
+    <span class="rp-role-chip">{{ roleName }}</span>
+  </h1>
+  <div class="rp-divider"></div>
+
+  <div *ngIf="error" class="rp-error">{{ error }}</div>
+
+  <div class="rp-panel">
+    <div class="rp-panel-title">Controller Permissions</div>
+    <div class="rp-panel-body">
+      <p class="rp-hint">Select which actions this role can perform on each controller.</p>
+      <div class="rp-table-wrap">
+        <table class="rp-table">
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Name</th>
+              <th *ngFor="let action of actions">{{ action | titlecase }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ctrl of controllers; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td class="rp-name-cell">{{ ctrl.label }}</td>
+              <td *ngFor="let action of actions">
+                <input
+                  type="checkbox"
+                  [checked]="isSelected(matrixPermission(ctrl.key, action))"
+                  (change)="toggle(matrixPermission(ctrl.key, action))"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rp-extra-block">
+        <div class="rp-extra-title">Additional Permissions:</div>
+        <div class="rp-extra-grid">
+          <span *ngIf="additionalPermissions.length === 0" class="rp-muted">No additional permissions configured</span>
+          <label *ngFor="let p of additionalPermissions" class="rp-extra-item">
+            <input type="checkbox" [checked]="isSelected(p)" (change)="toggle(p)" />
+            <span>{{ p.replace(':', ' - ') }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-actions">
+    <button type="button" class="rp-btn rp-btn-save" (click)="save()" [disabled]="saving">
+      {{ saving ? 'Saving...' : 'Save Permissions' }}
+    </button>
+    <button type="button" class="rp-btn rp-btn-back" (click)="back()">Back to Role Manager</button>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="rp-page page-enter">
+    <div *ngIf="error" class="rp-error">{{ error }}</div>
+    <div class="page-loading">Loading permissions for {{ roleName || 'role' }}...</div>
+    <button type="button" class="rp-btn rp-btn-back" style="margin-top: 12px" (click)="back()">
+      Back to Role Manager
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="header d-flex justify-content-between align-items-center mb-4" *ngIf="!isFormVisible">
+    <h2>Item Category Management</h2>
+    <div class="d-flex gap-2">
+      <input type="text" [(ngModel)]="searchText" (ngModelChange)="p=1" class="form-control w-auto" placeholder="Search categories...">
+      <button (click)="openNewForm()" class="btn-add">
+        <i class="fas fa-plus"></i> Add Category
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4" *ngIf="isFormVisible">
+    <div class="card-header">
+      <h3 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Category</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #categoryForm="ngForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Category Name *</label>
+            <input type="text" [(ngModel)]="currentCategory.categoryName" name="categoryName" class="form-control" required #catName="ngModel" placeholder="Enter name">
+            <div *ngIf="catName.invalid && (catName.dirty || catName.touched)" class="text-danger small mt-1">Required field.</div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Description</label>
+            <textarea [(ngModel)]="currentCategory.categoryDescription" name="categoryDescription" class="form-control" rows="3" placeholder="Enter details"></textarea>
+          </div>
+        </div>
+        <div class="button-group mt-3 border-top pt-3">
+          <button type="submit" class="btn-save" [disabled]="categoryForm.invalid">
+            <i class="fas fa-save"></i> Save Category
+          </button>
+          <button type="button" (click)="closeForm()" class="btn-cancel">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm" *ngIf="!isFormVisible">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th (click)="sort('itemCategoryId')" style="cursor:pointer">ID <i class="fas fa-sort ms-1"></i></th>
+            <th (click)="sort('categoryName')" style="cursor:pointer">NAME <i class="fas fa-sort ms-1"></i></th>
+            <th>DESCRIPTION</th>
+            <th>STATUS</th>
+            <th class="text-center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredCategories | paginate: { itemsPerPage: pageSize, currentPage: p }">
+            <td>#{{ item.itemCategoryId }}</td>
+            <td><strong>{{ item.categoryName }}</strong></td>
+            <td>{{ item.categoryDescription || 'N/A' }}</td>
+            <td><span [ngClass]="item.isActive ? 'status-active' : 'status-inactive'">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td>
+            <td class="action-buttons">
+              <button (click)="onEdit(item.itemCategoryId)" class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+              <button (click)="onDelete(item.itemCategoryId)" class="btn-delete"><i class="fas fa-trash"></i> Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3 d-flex justify-content-between align-items-center border-top">
+      <small class="text-muted">
+        Showing <strong>{{ startIndex }}</strong> to <strong>{{ endIndex }}</strong> of <strong>{{ totalCount }}</strong> results
+      </small>
+      <div class="d-flex align-items-center gap-2">
+        <select [(ngModel)]="pageSize" (change)="p = 1" class="form-select form-select-sm" style="width: auto;">
+          <option [value]="5">5 / page</option>
+          <option [value]="10">10 / page</option>
+          <option [value]="15">15 / page</option>
+          <option [value]="20">20 / page</option>
+        </select>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

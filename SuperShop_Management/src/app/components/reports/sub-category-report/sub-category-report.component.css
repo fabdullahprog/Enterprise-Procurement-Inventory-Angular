@@ -1,0 +1,266 @@
+
+.container { padding: 24px; background: #f8fafc; min-height: 100vh; }
+
+.header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 24px; 
+}
+
+.header h2 { 
+  margin: 0; 
+  font-size: 24px; 
+  font-weight: 600;
+  color: #1e293b; 
+}
+
+.header .d-flex { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+}
+
+.search-box { 
+  padding: 10px 12px; 
+  border: 1px solid #cbd5e1; 
+  border-radius: 6px; 
+  font-size: 14px;
+}
+
+.search-box::placeholder {
+  color: #94a3b8;
+}
+
+.btn-print { 
+  padding: 10px 20px; 
+  background: #2563eb; 
+  color: #fff; 
+  border: none; 
+  border-radius: 6px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.btn-print:hover { 
+  background: #1d4ed8; 
+}
+
+.card { 
+  background: #fff; 
+  border-radius: 8px; 
+  border: 1px solid #e2e8f0; 
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); 
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin: 0;
+}
+
+.table thead th { 
+  background-color: #f1f5f9; 
+  color: #475569; 
+  font-weight: 600; 
+  font-size: 12px; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+  padding: 12px 16px; 
+  border-bottom: 2px solid #e2e8f0; 
+  vertical-align: middle;
+}
+
+.table tbody td { 
+  padding: 12px 16px; 
+  border-bottom: 1px solid #e2e8f0; 
+  font-size: 14px; 
+  vertical-align: middle;
+}
+
+.table tbody tr { 
+  transition: background-color 0.15s ease-in-out; 
+}
+
+.table tbody tr:hover { 
+  background-color: #f8fafc; 
+}
+
+.table tbody tr.selected {
+  background-color: #e0e7ff;
+}
+
+.form-check-input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.form-check-input:checked {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.status-active { 
+  display: inline-block;
+  color: #059669; 
+  background: #d1fae5; 
+  padding: 4px 12px; 
+  border-radius: 99px; 
+  font-size: 12px; 
+  font-weight: 600;
+}
+
+.status-inactive { 
+  display: inline-block;
+  color: #dc2626; 
+  background: #fee2e2; 
+  padding: 4px 12px; 
+  border-radius: 99px; 
+  font-size: 12px; 
+  font-weight: 600;
+}
+
+.print-btn {
+  width: 32px;
+  height: 32px;
+  padding: 6px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  transition: all 0.2s;
+}
+
+.print-btn:hover {
+  background: #e0e7ff;
+  border-color: #2563eb;
+}
+
+.badge {
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.spinner-border {
+  color: #2563eb;
+}
+
+@media print {
+  .header, .search-box, .btn-print { display: none !important; }
+}
+
+
+.table thead th {
+    background-color: #f1f3f5;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-top: none;
+    padding: 15px 10px;
+}
+
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+.input-group .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+
+.badge {
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+
+.text-success i {
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+
+@media print {
+    
+    .no-print, 
+    .btn, 
+    .input-group, 
+    .sidebar, 
+    .navbar {
+        display: none !important;
+    }
+
+    
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: white;
+    }
+
+    .container-fluid {
+        padding: 0 !important;
+        background-color: white !important;
+    }
+
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    
+    .table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    .table th, .table td {
+        border: 1px solid #dee2e6 !important;
+        padding: 8px !important;
+    }
+
+    
+    h2 {
+        text-align: center;
+        margin-bottom: 20px !important;
+        color: black !important;
+    }
+}

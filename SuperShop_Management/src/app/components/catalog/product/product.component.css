@@ -1,0 +1,147 @@
+/* Container and General Styles */
+.container-fluid {
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Page Title Style */
+.page-title {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.5rem;
+}
+
+/* Header Controls (Search & Add Button) */
+.search-wrapper .input-group {
+  border-radius: 10px;
+  background: white;
+}
+
+.search-wrapper .form-control:focus {
+  box-shadow: none;
+}
+
+.search-wrapper .input-group-text {
+  font-size: 14px;
+}
+
+/* Add Product Button */
+.btn-primary {
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+}
+
+/* Main Table Card Design */
+.main-card {
+  border-radius: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.table thead th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.table tbody td {
+  padding: 1rem 0.75rem;
+  color: #334155;
+  font-size: 14px;
+}
+
+/* Table Row Hover Effect */
+.table-hover tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Custom Badges (Category) */
+.badge-cat {
+  background-color: #ecfdf5;
+  color: #059669;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #d1fae5;
+}
+
+/* Action Buttons (Yellow & Red) */
+.btn-edit-custom {
+  background-color: #ffb703;
+  color: #1e293b;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-edit-custom:hover {
+  background-color: #fb8500;
+}
+
+.btn-delete-custom {
+  background-color: #ef233c;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-delete-custom:hover {
+  background-color: #d90429;
+}
+
+/* Form Styles */
+.custom-input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.custom-input:focus {
+  border-color: #4361ee;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.form-label {
+  color: #475569;
+  font-size: 13px;
+}
+
+/* Pagination Aligned Right */
+.custom-pagination ::ng-deep .ngx-pagination {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.custom-pagination ::ng-deep .ngx-pagination .current {
+  background: #4361ee;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+/* Small Text (Barcode under Name) */
+.small-text {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+}

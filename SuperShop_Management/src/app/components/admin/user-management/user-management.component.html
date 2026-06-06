@@ -1,0 +1,120 @@
+<div class="user-management-page page-enter" *ngIf="!loading && !error; else stateTpl">
+  <div class="page-header">
+    <div>
+      <h1>User Management</h1>
+      <p>View all users and their assigned roles</p>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="loadUsers()">Refresh</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Total Users</span>
+        <span class="stat-value">{{ users.length }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Admins</span>
+        <span class="stat-value">{{ countByRole('Admin') }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Managers</span>
+        <span class="stat-value">{{ countByRole('Manager') }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Employees</span>
+        <span class="stat-value">{{ countByRole('Employee') }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters-section">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search by email or name..."
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+      />
+    </div>
+    <div class="role-filter">
+      <label>Filter by Role:</label>
+      <select [(ngModel)]="filterRole" name="filterRole">
+        <option value="all">All Roles</option>
+        <option *ngFor="let role of allRoles" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="results-info">
+    Showing <strong>{{ filteredUsers.length }}</strong> of <strong>{{ users.length }}</strong> users
+  </div>
+
+  <div *ngIf="filteredUsers.length === 0" class="empty-state">
+    <h3>No users found</h3>
+    <p>Try adjusting your search or filter criteria</p>
+  </div>
+
+  <div *ngIf="filteredUsers.length > 0" class="users-table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Roles</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>
+            <div class="user-cell">
+              <div class="user-avatar">{{ user.email[0] | uppercase }}</div>
+              <div class="user-info">
+                <span class="user-name">{{ user.fullName || 'N/A' }}</span>
+                <span class="user-id">ID: {{ user.id }}</span>
+              </div>
+            </div>
+          </td>
+          <td class="user-email">{{ user.email }}</td>
+          <td>
+            <span class="department-badge">{{ user.departmentName || 'No Department' }}</span>
+          </td>
+          <td>
+            <div class="roles-list" *ngIf="user.roles.length; else noRoles">
+              <span *ngFor="let role of user.roles" class="role-badge" [ngClass]="getRoleClass(role)">
+                <span class="role-icon">{{ getRoleIcon(role) }}</span>
+                {{ role }}
+              </span>
+            </div>
+            <ng-template #noRoles>
+              <span class="no-roles">No roles assigned</span>
+            </ng-template>
+          </td>
+          <td class="date-text">{{ formatDate(user.createdDate) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #stateTpl>
+  <div class="user-management-page">
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading users...</p>
+    </div>
+    <div *ngIf="!loading && error" class="error-container">
+      <h2>Error</h2>
+      <p class="error-message">{{ error }}</p>
+      <button type="button" class="btn btn-primary" (click)="loadUsers()">Retry</button>
+    </div>
+  </div>
+</ng-template>

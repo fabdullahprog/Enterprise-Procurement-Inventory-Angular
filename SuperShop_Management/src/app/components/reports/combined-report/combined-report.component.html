@@ -1,0 +1,187 @@
+<div class="container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>
+        <i class="fas fa-chart-bar header-icon"></i>
+        Category & Sub-Category Reports
+      </h2>
+      <p class="header-subtitle">View and manage all category reports in one place</p>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-wrapper">
+    <div class="tab-nav">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'category'"
+        (click)="switchTab('category')">
+        <i class="fas fa-chart-pie"></i>
+        <span>Categories</span>
+        <span class="tab-count">{{ categories.length }}</span>
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'subcategory'"
+        (click)="switchTab('subcategory')">
+        <i class="fas fa-chart-line"></i>
+        <span>Sub-Categories</span>
+        <span class="tab-count">{{ subCategories.length }}</span>
+      </button>
+    </div>
+
+    <!-- Search & Print Bar -->
+    <div class="action-bar">
+      <div class="search-wrapper" *ngIf="activeTab === 'category'">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="categorySearchText" 
+          (ngModelChange)="applyCategoryFilter()" 
+          class="search-box" 
+          placeholder="Search category...">
+      </div>
+      <div class="search-wrapper" *ngIf="activeTab === 'subcategory'">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="subCategorySearchText" 
+          (ngModelChange)="applySubCategoryFilter()" 
+          class="search-box" 
+          placeholder="Search sub-category...">
+      </div>
+      <button 
+        (click)="activeTab === 'category' ? printAllCategories() : printAllSubCategories()" 
+        class="btn-print">
+        <i class="fas fa-print"></i> Print all
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== CATEGORY TABLE ===================== -->
+  <div class="card shadow-sm border-0 overflow-hidden" *ngIf="activeTab === 'category'">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 40px;">
+              <input type="checkbox" [checked]="categorySelectAll" (change)="toggleCategorySelectAll()" class="form-check-input">
+            </th>
+            <th style="width: 50px;">#</th>
+            <th>Category name</th>
+            <th>Code</th>
+            <th>Department</th>
+            <th class="text-center">Items</th>
+            <th>Status</th>
+            <th class="text-center" style="width: 50px;">Print</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status"></div>
+            </td>
+          </tr>
+
+          <tr *ngFor="let cat of filteredCategories; trackBy: trackByCategoryId; let i = index" [class.selected]="cat.selected">
+            <td>
+              <input type="checkbox" [checked]="cat.selected" (change)="toggleSelectCategory(cat)" class="form-check-input">
+            </td>
+            <td class="fw-bold text-muted">{{ i + 1 }}</td>
+            <td>
+              <strong>{{ cat.categoryName }}</strong>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark">{{ cat.code }}</span>
+            </td>
+            <td>{{ cat.department }}</td>
+            <td class="text-center">
+              <strong>{{ cat.itemsCount }}</strong>
+            </td>
+            <td>
+              <span [ngClass]="cat.isActive ? 'status-active' : 'status-inactive'">
+                {{ cat.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button (click)="printSingleCategory(cat)" class="btn btn-sm btn-light print-btn" title="Print this record">
+                <i class="fas fa-print text-primary"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && filteredCategories.length === 0">
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="fas fa-folder-open d-block mb-2" style="font-size: 2rem;"></i>
+              No categories found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== SUB-CATEGORY TABLE ===================== -->
+  <div class="card shadow-sm border-0 overflow-hidden" *ngIf="activeTab === 'subcategory'">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 40px;">
+              <input type="checkbox" [checked]="subCategorySelectAll" (change)="toggleSubCategorySelectAll()" class="form-check-input">
+            </th>
+            <th style="width: 50px;">#</th>
+            <th>Sub-Category name</th>
+            <th>Code</th>
+            <th>Category</th>
+            <th class="text-center">Items</th>
+            <th>Status</th>
+            <th class="text-center" style="width: 50px;">Print</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status"></div>
+            </td>
+          </tr>
+
+          <tr *ngFor="let sub of filteredSubCategories; trackBy: trackBySubCategoryId; let i = index" [class.selected]="sub.selected">
+            <td>
+              <input type="checkbox" [checked]="sub.selected" (change)="toggleSelectSubCategory(sub)" class="form-check-input">
+            </td>
+            <td class="fw-bold text-muted">{{ i + 1 }}</td>
+            <td>
+              <strong>{{ sub.subCategoryName }}</strong>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark">{{ sub.code }}</span>
+            </td>
+            <td>{{ sub.itemCategoryName || 'N/A' }}</td>
+            <td class="text-center">
+              <strong>{{ sub.itemsCount }}</strong>
+            </td>
+            <td>
+              <span [ngClass]="sub.isActive ? 'status-active' : 'status-inactive'">
+                {{ sub.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button (click)="printSingleSubCategory(sub)" class="btn btn-sm btn-light print-btn" title="Print this record">
+                <i class="fas fa-print text-primary"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && filteredSubCategories.length === 0">
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="fas fa-folder-open d-block mb-2" style="font-size: 2rem;"></i>
+              No sub-categories found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

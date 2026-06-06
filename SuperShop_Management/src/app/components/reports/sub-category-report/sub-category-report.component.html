@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="header d-flex justify-content-between align-items-center mb-4">
+    <h2>Sub-Categories</h2>
+    <div class="d-flex gap-2">
+      <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilter()" class="form-control search-box" placeholder="Search sub-category..." style="max-width: 400px;">
+      <button (click)="printAll()" class="btn-print">
+        <i class="fas fa-print"></i> Print all
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 40px;">
+              <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()" class="form-check-input">
+            </th>
+            <th style="width: 50px;">#</th>
+            <th>Sub-Category name</th>
+            <th>Code</th>
+            <th>Category</th>
+            <th class="text-center">Items</th>
+            <th>Status</th>
+            <th class="text-center" style="width: 50px;">Print</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status"></div>
+            </td>
+          </tr>
+
+          <tr *ngFor="let sub of filteredSubCategories; trackBy: trackBySubCategoryId; let i = index" [class.selected]="sub.selected">
+            <td>
+              <input type="checkbox" [checked]="sub.selected" (change)="toggleSelectSubCategory(sub)" class="form-check-input">
+            </td>
+            <td class="fw-bold text-muted">{{ i + 1 }}</td>
+            <td>
+              <strong>{{ sub.subCategoryName }}</strong>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark">{{ sub.code }}</span>
+            </td>
+            <td>{{ sub.itemCategoryName || 'N/A' }}</td>
+            <td class="text-center">
+              <strong>{{ sub.itemsCount }}</strong>
+            </td>
+            <td>
+              <span [ngClass]="sub.isActive ? 'status-active' : 'status-inactive'">
+                {{ sub.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button (click)="printSingle(sub)" class="btn btn-sm btn-light print-btn" title="Print this record">
+                <i class="fas fa-print text-primary"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && filteredSubCategories.length === 0">
+            <td colspan="8" class="text-center py-5 text-muted">
+              <i class="fas fa-folder-open d-block mb-2" style="font-size: 2rem;"></i>
+              No sub-categories found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

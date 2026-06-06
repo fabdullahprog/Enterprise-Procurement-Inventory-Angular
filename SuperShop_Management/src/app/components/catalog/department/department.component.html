@@ -1,0 +1,160 @@
+<div class="container">
+  <div class="header d-flex justify-content-between align-items-center mb-4" *ngIf="!isFormVisible">
+    <h2>Department Management</h2>
+    <div class="d-flex gap-2">
+      <input type="text" [(ngModel)]="searchText" (ngModelChange)="p=1; applyFilter()" class="form-control" placeholder="Search departments..." style="max-width: 400px;">
+      <button (click)="openForm()" class="btn-add">
+        <i class="fas fa-plus"></i> Add Department
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card shadow mb-4" *ngIf="isFormVisible">
+    <div class="card-header">
+      <h3 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Department</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #deptForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Department Code *</label>
+            <input type="text" [(ngModel)]="currentDepartment.departmentCode" name="code" 
+                   class="form-control" required placeholder="e.g., DEPT001">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Department Name *</label>
+            <input type="text" [(ngModel)]="currentDepartment.departmentName" name="name" 
+                   class="form-control" required placeholder="e.g., Sales Department">
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" [(ngModel)]="currentDepartment.departmentEmail" name="email" 
+                   class="form-control" placeholder="dept@example.com">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" [(ngModel)]="currentDepartment.departmentPhone" name="phone" 
+                   class="form-control" placeholder="+880XXXXXXXXX">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Location</label>
+            <input type="text" [(ngModel)]="currentDepartment.location" name="location" 
+                   class="form-control" placeholder="Building/Floor">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Description</label>
+            <input type="text" [(ngModel)]="currentDepartment.description" name="description" 
+                   class="form-control" placeholder="Brief description">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <div class="form-check">
+              <input type="checkbox" [(ngModel)]="currentDepartment.canRequestItem" 
+                     name="canRequest" class="form-check-input" id="canRequest">
+              <label class="form-check-label" for="canRequest">
+                Can Request Items
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-check">
+              <input type="checkbox" [(ngModel)]="currentDepartment.canIssueItem" 
+                     name="canIssue" class="form-check-input" id="canIssue">
+              <label class="form-check-label" for="canIssue">
+                Can Issue Items
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-check">
+              <input type="checkbox" [(ngModel)]="currentDepartment.isActive" 
+                     name="isActive" class="form-check-input" id="isActive">
+              <label class="form-check-label" for="isActive">
+                Active
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group mt-3 border-top pt-3">
+          <button type="submit" class="btn-save" [disabled]="deptForm.invalid">
+            <i class="fas fa-save"></i> {{ isEditMode ? 'Update' : 'Save' }} Department
+          </button>
+          <button type="button" (click)="closeForm()" class="btn-cancel">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card shadow-sm" *ngIf="!isFormVisible">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th (click)="sort('departmentId')" style="cursor:pointer">#SL <i class="fas fa-sort ms-1"></i></th>
+            <th (click)="sort('departmentCode')" style="cursor:pointer">CODE <i class="fas fa-sort ms-1"></i></th>
+            <th (click)="sort('departmentName')" style="cursor:pointer">NAME <i class="fas fa-sort ms-1"></i></th>
+            <th>EMAIL</th>
+            <th>PHONE</th>
+            <th>LOCATION</th>
+            <th>STATUS</th>
+            <th class="text-center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading">
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngFor="let dept of filteredDepartments | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index">
+            <td>{{ startIndex + i }}</td>
+            <td><strong>{{ dept.departmentCode }}</strong></td>
+            <td>
+              <strong>{{ dept.departmentName }}</strong>
+              <div *ngIf="dept.description" class="small text-muted">{{ dept.description }}</div>
+            </td>
+            <td>{{ dept.departmentEmail || 'N/A' }}</td>
+            <td>{{ dept.departmentPhone || 'N/A' }}</td>
+            <td>{{ dept.location || 'N/A' }}</td>
+            <td><span [ngClass]="dept.isActive ? 'status-active' : 'status-inactive'">{{ dept.isActive ? 'Active' : 'Inactive' }}</span></td>
+            <td class="action-buttons">
+              <button (click)="onEdit(dept.departmentId)" class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+              <button (click)="onDelete(dept.departmentId)" class="btn-delete"><i class="fas fa-trash"></i> Delete</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredDepartments.length === 0 && !isLoading">
+            <td colspan="8" class="text-center py-4 text-muted">
+              <i class="fas fa-folder-open d-block mb-2" style="font-size: 2rem;"></i>
+              No departments found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3 d-flex justify-content-between align-items-center border-top">
+      <small class="text-muted">
+        Showing <strong>{{ startIndex }}</strong> to <strong>{{ endIndex }}</strong> of <strong>{{ totalCount }}</strong> results
+      </small>
+      <div class="d-flex align-items-center gap-2">
+        <select [(ngModel)]="pageSize" (change)="p = 1" class="form-select form-select-sm" style="width: auto;">
+          <option [value]="5">5 / page</option>
+          <option [value]="10">10 / page</option>
+          <option [value]="15">15 / page</option>
+          <option [value]="20">20 / page</option>
+        </select>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

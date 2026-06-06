@@ -1,0 +1,98 @@
+/* Container Background */
+.container-fluid {
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Card Design */
+.card {
+  border: 1px solid #e2e8f0;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Table Header Styles */
+.table thead th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* Table Body Styles */
+.table tbody td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Row Hover Effect */
+.table-hover tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Search Box Focus Effect */
+.search-wrapper .form-control:focus {
+  background-color: #fff;
+  border-color: #4361ee;
+}
+
+/* Custom Badges (Currency) */
+.bg-soft-info {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+}
+
+/* Form Labels */
+.form-label {
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Input Fields Styling */
+.form-control, .form-select {
+  transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+/* Action Buttons Styling */
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.btn-sm:hover {
+  transform: translateY(-1px);
+  filter: brightness(95%);
+}
+
+/* Pagination Customization */
+::ng-deep .ngx-pagination {
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #4361ee !important;
+  border-radius: 4px;
+}
+
+/* Placeholder Styling */
+::placeholder {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Textarea Resize */
+textarea.form-control {
+  resize: none;
+}

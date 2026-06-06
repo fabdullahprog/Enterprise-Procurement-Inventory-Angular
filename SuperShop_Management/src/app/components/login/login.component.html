@@ -1,0 +1,69 @@
+ <div class="login-container">
+  <div class="login-card">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+          <line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="1.8"/>
+          <path d="M16 10a4 4 0 01-8 0" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">SuperShop</span>
+        <span class="logo-tagline">Management System</span>
+      </div>
+    </div>
+
+    <hr class="logo-divider">
+
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to your account</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" formControlName="email" placeholder="admin@supershop.com" />
+        </div>
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-msg">
+          Please enter a valid email.
+        </div>
+      </div>
+
+      <!-- ✅ Password field with show/hide toggle -->
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+          />
+          <button type="button" class="toggle-pw" (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-msg">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-msg server-error">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">Login</button>
+
+      <p class="register-link">
+        Don't have an account? <a routerLink="/register">Register here</a>
+      </p>
+
+    </form>
+  </div>
+</div>

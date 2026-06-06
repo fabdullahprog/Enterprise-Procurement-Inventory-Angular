@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="header d-flex justify-content-between align-items-center mb-4" *ngIf="!isFormVisible">
+    <h2>Unit Management</h2>
+    <div class="d-flex gap-2">
+      <input type="text" [(ngModel)]="searchText" class="form-control w-auto" placeholder="Search units...">
+      <button (click)="openForm()" class="btn-add"><i class="fas fa-plus"></i> Add Unit</button>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4" *ngIf="isFormVisible">
+    <div class="card-body">
+      <h3>{{ isEditMode ? 'Edit' : 'Create' }} Unit</h3>
+      <form (ngSubmit)="onSubmit()" #unitForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Unit Name *</label>
+            <input type="text" [(ngModel)]="currentUnit.nameOfUnit" name="name" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Unit Set *</label>
+            <select [(ngModel)]="currentUnit.unitSetId" name="setId" class="form-control" required>
+              <option value="">-- Select Set --</option>
+              <option *ngFor="let set of unitSets" [value]="set.unitSetId">{{set.nameOfUnitSet}}</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Factor *</label>
+            <input type="number" [(ngModel)]="currentUnit.unitFactor" name="factor" class="form-control" required min="0.000001">
+          </div>
+          <div class="col-md-4 mb-3 d-flex align-items-center mt-4">
+            <input type="checkbox" [(ngModel)]="currentUnit.isBaseUnit" name="base" id="base">
+            <label for="base" class="ms-2"> Is Base Unit?</label>
+          </div>
+        </div>
+        <div class="button-group border-top pt-3">
+          <button type="submit" class="btn-save" [disabled]="unitForm.invalid">Save</button>
+          <button type="button" (click)="closeForm()" class="btn-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm" *ngIf="!isFormVisible">
+    <table class="table">
+      <thead>
+        <tr>
+          <th (click)="toggleSort('unitId')" style="cursor:pointer">ID <i class="fas" [ngClass]="sortColumn === 'unitId' ? (sortDirection ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i></th>
+          <th (click)="toggleSort('nameOfUnit')" style="cursor:pointer">UNIT NAME <i class="fas" [ngClass]="sortColumn === 'nameOfUnit' ? (sortDirection ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i></th>
+          <th>UNIT SET</th>
+          <th>FACTOR</th>
+          <th>BASE UNIT</th>
+          <th class="text-center">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredUnits | paginate: { itemsPerPage: pageSize, currentPage: p }">
+          <td>#{{ item.unitId }}</td>
+          <td>{{ item.nameOfUnit }}</td>
+          <td>{{ item.unitSetName }}</td>
+          <td>{{ item.unitFactor }}</td>
+          <td><span class="badge" [ngClass]="item.isBaseUnit ? 'bg-success' : 'bg-secondary'">{{ item.isBaseUnit ? 'Yes' : 'No' }}</span></td>
+          <td class="text-center">
+            <button (click)="onEdit(item)" class="btn-edit btn-sm"><i class="fas fa-edit"></i> Edit</button>
+            <button (click)="onDelete(item.unitId)" class="btn-delete btn-sm ms-2"><i class="fas fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="p-3 d-flex justify-content-between align-items-center border-top">
+      <small class="text-muted">
+        Showing <strong>{{ startIndex }}</strong> to <strong>{{ endIndex }}</strong> of <strong>{{ totalCount }}</strong> results
+      </small>
+      <div class="d-flex align-items-center gap-2">
+        <select [(ngModel)]="pageSize" (change)="p = 1" class="form-select form-select-sm" style="width: auto;">
+          <option [value]="5">5 / page</option>
+          <option [value]="10">10 / page</option>
+          <option [value]="15">15 / page</option>
+          <option [value]="20">20 / page</option>
+        </select>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

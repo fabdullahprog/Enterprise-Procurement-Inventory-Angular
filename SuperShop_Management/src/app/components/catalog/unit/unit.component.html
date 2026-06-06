@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="header d-flex justify-content-between align-items-center mb-4" *ngIf="!isFormVisible">
+    <h2>Unit Management</h2>
+    <div class="d-flex gap-2">
+      <input type="text" [(ngModel)]="searchText" (ngModelChange)="p=1" class="form-control w-auto" placeholder="Search units...">
+      <button (click)="openForm()" class="btn-add">
+        <i class="fas fa-plus"></i> Add Unit
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4" *ngIf="isFormVisible">
+    <div class="card-header bg-white border-0">
+      <h3 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Unit</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #unitForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Unit Name *</label>
+            <input type="text" [(ngModel)]="currentUnit.nameOfUnit" name="nameOfUnit" class="form-control" required #uName="ngModel">
+            <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger small mt-1">Unit name is required.</div>
+          </div>
+          
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Factor to Base Unit *</label>
+            <input type="number" [(ngModel)]="currentUnit.unitFactor" name="unitFactor" class="form-control" required min="0.0000001">
+          </div>
+
+          <div class="col-md-3 mb-3 d-flex align-items-center mt-3">
+            <div class="form-check">
+              <input type="checkbox" [(ngModel)]="currentUnit.isBaseUnit" name="isBaseUnit" class="form-check-input" id="isBase">
+              <label class="form-check-label" for="isBase">Is Base Unit?</label>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Description</label>
+            <textarea [(ngModel)]="currentUnit.description" name="description" class="form-control" rows="2"></textarea>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Remarks</label>
+            <textarea [(ngModel)]="currentUnit.remarks" name="remarks" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        
+        <div class="button-group mt-3 border-top pt-3">
+          <button type="submit" class="btn-save" [disabled]="unitForm.invalid">
+            <i class="fas fa-save"></i> Save Unit
+          </button>
+          <button type="button" (click)="closeForm()" class="btn-cancel">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm" *ngIf="!isFormVisible">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>UNIT NAME</th>
+            <th>FACTOR</th>
+            <th>BASE UNIT</th>
+            <th class="text-center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredUnits | paginate: { itemsPerPage: pageSize, currentPage: p }">
+            <td>#{{ item.unitId }}</td>
+            <td><strong>{{ item.nameOfUnit }}</strong></td>
+            <td>{{ item.unitFactor }}</td>
+            <td>
+              <span [ngClass]="item.isBaseUnit ? 'status-active' : 'status-inactive'">
+                {{ item.isBaseUnit ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td class="action-buttons">
+              <button (click)="onEdit(item)" class="btn-edit">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button (click)="onDelete(item.unitId)" class="btn-delete">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredUnits.length === 0">
+            <td colspan="5" class="text-center py-4 text-muted">No units found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="p-3 d-flex justify-content-between align-items-center border-top">
+      <small class="text-muted">
+        Showing <strong>{{ startIndex }}</strong> to <strong>{{ endIndex }}</strong> of <strong>{{ totalCount }}</strong> results
+      </small>
+      <div class="d-flex align-items-center gap-2">
+        <select [(ngModel)]="pageSize" (change)="p = 1" class="form-select form-select-sm" style="width: auto;">
+          <option [value]="5">5 / page</option>
+          <option [value]="10">10 / page</option>
+          <option [value]="15">15 / page</option>
+          <option [value]="20">20 / page</option>
+        </select>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+  </div>
+</div>

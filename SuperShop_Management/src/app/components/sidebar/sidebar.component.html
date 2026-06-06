@@ -1,0 +1,117 @@
+<div class="sidebar shadow">
+  <div class="sidebar-header">
+    <i class="fas fa-shopping-cart text-warning"></i>
+    <span class="ms-2">SuperShop Admin</span>
+  </div>
+  
+  <nav class="nav-menu">
+    <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="fas fa-th-large"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <div class="menu-label" (click)="toggleMenu('catalog')">
+      <span>CATALOG MANAGEMENT</span>
+      <i class="fas" [ngClass]="isCatalogOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+    </div>
+
+    <div class="submenu" *ngIf="isCatalogOpen">
+      <a routerLink="/departments" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-building"></i>
+        <span>Departments</span>
+      </a>
+      <a routerLink="/brands" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-copyright"></i>
+        <span>Brands</span>
+      </a>
+      <a routerLink="/categories" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-list-ul"></i>
+        <span>Categories</span>
+      </a>
+      <a routerLink="/sub-categories" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-sitemap"></i>
+        <span>Sub-Categories</span>
+      </a>
+      <a routerLink="/unit-sets" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-layer-group"></i>
+        <span>Unit Sets</span>
+      </a>
+      <a routerLink="/units" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-balance-scale"></i>
+        <span>Units</span>
+      </a>
+      <a routerLink="/currencies" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>Currencies</span>
+      </a>
+      <a routerLink="/products" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-box-open"></i>
+        <span>Products</span>
+      </a>
+    </div>
+
+    <!-- <div class="menu-label" (click)="toggleMenu('inventory')">
+      <span>INVENTORY MANAGEMENT</span>
+      <i class="fas" [ngClass]="isInventoryOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+    </div>
+
+    <div class="submenu" *ngIf="isInventoryOpen">
+      <a routerLink="/batches" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-tags"></i>
+        <span>Batches</span>
+      </a>
+      <a routerLink="/stock-movements" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-exchange-alt"></i>
+        <span>Stock Movements</span>
+      </a>
+    </div> -->
+
+    <div class="menu-label" (click)="toggleMenu('purchase')">
+      <span>PURCHASE MANAGEMENT</span>
+      <i class="fas" [ngClass]="isPurchaseOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+    </div>
+
+    <div class="submenu" *ngIf="isPurchaseOpen">
+      <a routerLink="/suppliers" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-truck"></i>
+        <span>Suppliers</span>
+      </a>
+    </div>
+
+    <div class="menu-label" (click)="toggleMenu('reports')">
+      <span>REPORTS & ANALYTICS</span>
+      <i class="fas" [ngClass]="isReportsOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+    </div>
+
+    <div class="submenu" *ngIf="isReportsOpen">
+      <a routerLink="/reports/category-subcategory" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-chart-pie"></i>
+        <span>Category & Sub-Category</span>
+      </a>
+    </div>
+
+    <div class="menu-label" (click)="toggleMenu('admin')">
+      <span>ROLE MANAGEMENT</span>
+      <i class="fas" [ngClass]="isAdminOpen ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+    </div>
+
+    <div class="submenu" *ngIf="isAdminOpen">
+      <a routerLink="/role-manager" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-shield-alt"></i>
+        <span>Role Manager</span>
+      </a>
+      <a routerLink="/users" class="nav-item" routerLinkActive="active">
+        <i class="fas fa-users"></i>
+        <span>User Management</span>
+      </a>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="btn-logout shadow-sm" (click)="onLogout()">
+      <i class="fas fa-power-off me-2"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+</div>

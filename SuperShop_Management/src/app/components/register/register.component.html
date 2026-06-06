@@ -1,0 +1,46 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Account</h2>
+    <p class="subtitle">Fill in the details to get started</p>
+    
+    <div class="form-container">
+      <!-- Full Name Field -->
+      <!-- <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="registerData.fullName" name="fullName" placeholder="Enter your full name">
+      </div> -->
+
+      <!-- Username Field -->
+      <!-- <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="registerData.userName" name="userName" placeholder="e.g. admin123">
+      </div> -->
+      
+      <!-- Email Field -->
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="admin@supershop.com">
+      </div>
+      
+      <!-- Password Field -->
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="*********">
+      </div>
+
+      <!-- Confirm Password Field (Added to fix the 400 Bad Request error) -->
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" placeholder="*********">
+      </div>
+      
+      <!-- Register Button -->
+      <button class="btn-register" (click)="onRegister()">Register Now</button>
+      
+      <!-- Redirect to Login -->
+      <p class="login-link">
+        Already have an account? <a routerLink="/login">Login here</a>
+      </p>
+    </div>
+  </div>
+</div>

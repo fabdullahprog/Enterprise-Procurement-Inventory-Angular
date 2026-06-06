@@ -1,0 +1,147 @@
+<div class="role-manager page-enter" *ngIf="!loading; else loadingTpl">
+  <h1 class="rm-page-title">Role Manager</h1>
+  <p class="rm-info-banner">
+    Changes here are saved to the database via API. The React app loads roles and permissions on login and via Profile → Refresh permissions.
+  </p>
+  <div *ngIf="error" class="rm-alert rm-alert-error">{{ error }}</div>
+
+  <div class="rm-layout">
+    <div class="rm-left-col">
+      <section class="rm-panel">
+        <div class="rm-panel-title">Role List</div>
+        <div class="rm-panel-body">
+          <div class="rm-table-wrap">
+            <table class="rm-table">
+              <thead>
+                <tr>
+                  <th>Role Name</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let name of roleNames">
+                  <td class="rm-role-name">{{ name }}</td>
+                  <td class="text-end">
+                    <div class="rm-action-row">
+                      <button
+                        type="button"
+                        class="rm-btn rm-btn-danger"
+                        (click)="deleteRole(name)"
+                        [disabled]="name === 'Admin'"
+                      >
+                        Delete
+                      </button>
+                      <button type="button" class="rm-btn rm-btn-light" (click)="openPermissions(name)">
+                        Permissions
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="rm-panel">
+        <div class="rm-panel-title">Create New Role</div>
+        <div class="rm-panel-body">
+          <label class="rm-label">Role Name:</label>
+          <input class="rm-input" [(ngModel)]="creatingRoleName" name="creatingRoleName" />
+          <button
+            type="button"
+            class="rm-btn rm-btn-dark"
+            (click)="createRole()"
+            [disabled]="!creatingRoleName.trim()"
+          >
+            Save
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="rm-right-col">
+      <section class="rm-panel">
+        <div class="rm-panel-title">Add Role to User</div>
+        <div class="rm-panel-body">
+          <label class="rm-label">User Name:</label>
+          <select class="rm-input" [(ngModel)]="assignUserId" name="assignUserId">
+            <option [ngValue]="0">Select User...</option>
+            <option *ngFor="let u of users" [ngValue]="u.id">{{ u.email }}</option>
+          </select>
+
+          <label class="rm-label">Role Name:</label>
+          <select class="rm-input" [(ngModel)]="assignRoleName" name="assignRoleName">
+            <option value="">Select Role...</option>
+            <option *ngFor="let r of roleNames" [value]="r">{{ r }}</option>
+          </select>
+
+          <button
+            type="button"
+            class="rm-btn rm-btn-dark"
+            (click)="addRoleToUser()"
+            [disabled]="!assignUserId || !assignRoleName"
+          >
+            Assign Role
+          </button>
+
+          <label class="rm-label">Department:</label>
+          <select class="rm-input" [(ngModel)]="assignDepartmentId" name="assignDepartmentId">
+            <option [ngValue]="0">Select Department...</option>
+            <option *ngFor="let d of departments" [ngValue]="d.departmentId">{{ d.departmentName }}</option>
+          </select>
+          <button type="button" class="rm-btn rm-btn-dark" (click)="assignDepartmentToUser()" [disabled]="!assignUserId">
+            Assign Department
+          </button>
+        </div>
+      </section>
+
+      <section class="rm-panel">
+        <div class="rm-panel-title">List Roles for User</div>
+        <div class="rm-panel-body">
+          <label class="rm-label">Select User:</label>
+          <select class="rm-input" [(ngModel)]="listRolesUserId" name="listRolesUserId">
+            <option [ngValue]="0">Select User...</option>
+            <option *ngFor="let u of users" [ngValue]="u.id">{{ u.email }}</option>
+          </select>
+          <button type="button" class="rm-btn rm-btn-dark" (click)="getRolesForUser()" [disabled]="!listRolesUserId">
+            Get Roles
+          </button>
+          <div *ngIf="listedRoles !== null" class="rm-listed-roles">
+            {{ listedRoles.length > 0 ? listedRoles.join(', ') : 'No roles assigned' }}
+          </div>
+        </div>
+      </section>
+
+      <section class="rm-panel">
+        <div class="rm-panel-title">Remove Role from User</div>
+        <div class="rm-panel-body">
+          <label class="rm-label">User Name:</label>
+          <select class="rm-input" [(ngModel)]="removeUserId" name="removeUserId">
+            <option [ngValue]="0">Select User...</option>
+            <option *ngFor="let u of users" [ngValue]="u.id">{{ u.email }}</option>
+          </select>
+
+          <label class="rm-label">Role Name:</label>
+          <select class="rm-input" [(ngModel)]="removeRoleName" name="removeRoleName">
+            <option value="">Select Role...</option>
+            <option *ngFor="let r of roleNames" [value]="r">{{ r }}</option>
+          </select>
+
+          <button
+            type="button"
+            class="rm-btn rm-btn-danger-outline"
+            (click)="removeRoleFromUser()"
+            [disabled]="!removeUserId || !removeRoleName"
+          >
+            Remove Role
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="page-loading">Loading role manager...</div>
+</ng-template>
